@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mysql.cj.xdevapi.PreparableStatement;
+
 
 public class ContaService {
 
     private ConnectionFactory connection;
 
-    ContaService(){
+    public ContaService(){
         this.connection = new ConnectionFactory();
     }
 
