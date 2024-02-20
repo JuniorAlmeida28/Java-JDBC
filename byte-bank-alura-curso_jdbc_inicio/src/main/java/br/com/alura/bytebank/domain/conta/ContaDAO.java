@@ -46,6 +46,7 @@ public class ContaDAO {
         Set<Conta> contas = new HashSet<>();
 
         String sql = "SELECT * FROM conta";
+        
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
