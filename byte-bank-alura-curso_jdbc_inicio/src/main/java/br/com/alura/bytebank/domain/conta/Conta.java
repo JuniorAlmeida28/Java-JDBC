@@ -25,10 +25,6 @@ public class Conta {
         return this.saldo.compareTo(BigDecimal.ZERO) != 0;
     }
 
-    public void sacar(BigDecimal valor) {
-        this.saldo = this.saldo.subtract(valor);
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -45,11 +41,10 @@ public class Conta {
 
     @Override
     public String toString() {
-        return "Conta{" +
-                "numero='" + numero + '\'' +
-                ", saldo=" + saldo +
-                ", titular=" + titular +
-                '}';
+        return "Conta:" +
+                "Numero: " + numero + '\'' +
+                ", Saldo: " + saldo +
+                ", Titular: " + titular;
     }
 
     public Integer getNumero() {
