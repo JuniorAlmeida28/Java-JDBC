@@ -42,6 +42,9 @@ public class ContaService {
         if (valor.compareTo(conta.getSaldo()) > 0) {
             throw new RegraDeNegocioException("Saldo insuficiente!");
         }
+        if (conta.getEstaAtiva() == false) {
+            throw new RegraDeNegocioException("Conta não está ativa");
+        }
         Connection conn = connection.recuperarConexao();
         BigDecimal novoValor = conta.getSaldo().subtract(valor);
         new ContaDAO(conn).alterar(conta.getNumero(), novoValor);
@@ -52,6 +55,9 @@ public class ContaService {
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RegraDeNegocioException("Valor do deposito deve ser superior a zero!");
         }
+        if (conta.getEstaAtiva() == false) {
+            throw new RegraDeNegocioException("Conta não está ativa");
+        }
 
        Connection conn = connection.recuperarConexao();
        BigDecimal novoValor = conta.getSaldo().add(valor);
@@ -61,6 +67,15 @@ public class ContaService {
     public void realizarTransferencia(Integer numeroDaContaPagador, BigDecimal valor, Integer numeroDaContaRecebedor) {
         realizarSaque(numeroDaContaPagador, valor);
         realizarDeposito(numeroDaContaRecebedor, valor); 
+    }
+
+    public void encerrarLogico(Integer numeroDaConta){
+        var conta = buscarContaPorNumero(numeroDaConta);
+        if (conta.possuiSaldo()) {
+            throw new RegraDeNegocioException("Conta não pode ser encerrada pois ainda possui saldo!");
+        }
+        Connection conn = connection.recuperarConexao();
+        new ContaDAO(conn).alterarLogico(numeroDaConta);
     }
 
     public void encerrar(Integer numeroDaConta) {
