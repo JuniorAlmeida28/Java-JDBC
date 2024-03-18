@@ -2,18 +2,16 @@ package br.com.alura.bytebank.domain.conta;
 
 import br.com.alura.bytebank.ConnectionFactory;
 import br.com.alura.bytebank.domain.RegraDeNegocioException;
-import br.com.alura.bytebank.domain.cliente.Cliente;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
 
 
 public class ContaService {
+    private Set<Conta> contas = new HashSet<>();
 
     private ConnectionFactory connection;
 
@@ -21,10 +19,9 @@ public class ContaService {
         this.connection = new ConnectionFactory();
     }
 
-    private Set<Conta> contas = new HashSet<>();
 
     public Set<Conta> listarContasAbertas() {
-        Connection conn = connection.recuperrarConexao();
+        Connection conn = connection.recuperarConexao();
         return new ContaDAO(conn).listar();
     }
 
@@ -34,7 +31,7 @@ public class ContaService {
     }
 
     public void abrir(DadosAberturaConta dadosDaConta) {
-        Connection conn = connection.recuperrarConexao();
+        Connection conn = connection.recuperarConexao();
         new ContaDAO(conn).salvar(dadosDaConta);
     }
 
@@ -57,7 +54,8 @@ public class ContaService {
             throw new RegraDeNegocioException("Valor do deposito deve ser superior a zero!");
         }
 
-        conta.depositar(valor);
+       Connection conn = connection.recuperarConexao();
+       new ContaDAO(conn).alterar(conta.getNumero(), valor);
     }
 
     public void encerrar(Integer numeroDaConta) {
@@ -69,13 +67,14 @@ public class ContaService {
         contas.remove(conta);
     }
 
-    private Conta buscarContaPorNumero(Integer numero) {
-        Connection conn = connection.recuperrarConexao();
+    public Conta buscarContaPorNumero(Integer numero) {
+        Connection conn = connection.recuperarConexao();
         Conta conta = new ContaDAO(conn).listarPorNumero(numero);
         if (conta != null) {
             return conta;
         }else {
             throw new RegraDeNegocioException("Não existe conta cadastrada com esse número!");
         }
+        
     }
 }
