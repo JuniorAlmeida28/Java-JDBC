@@ -5,13 +5,11 @@ import br.com.alura.bytebank.domain.RegraDeNegocioException;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.util.HashSet;
 import java.util.Set;
 
 
 
 public class ContaService {
-    private Set<Conta> contas = new HashSet<>();
 
     private ConnectionFactory connection;
 
@@ -70,8 +68,8 @@ public class ContaService {
         if (conta.possuiSaldo()) {
             throw new RegraDeNegocioException("Conta não pode ser encerrada pois ainda possui saldo!");
         }
-
-        contas.remove(conta);
+        Connection conn = connection.recuperarConexao();
+        new ContaDAO(conn).encerrarConta(numeroDaConta);
     }
 
     public Conta buscarContaPorNumero(Integer numero) {
