@@ -56,21 +56,13 @@ public class ContaService {
         }
 
        Connection conn = connection.recuperarConexao();
-       new ContaDAO(conn).alterar(conta.getNumero(), valor);
+       BigDecimal novoValor = conta.getSaldo().add(valor);
+       new ContaDAO(conn).alterar(conta.getNumero(), novoValor);
     }
 
     public void realizarTransferencia(Integer numeroDaContaPagador, BigDecimal valor, Integer numeroDaContaRecebedor) {
-        var conta = buscarContaPorNumero(numeroDaContaPagador);
-        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RegraDeNegocioException("Valor do transferencia deve ser superior a zero!");
-        }
-
-        if (valor.compareTo(conta.getSaldo()) > 0) {
-            throw new RegraDeNegocioException("Saldo insuficiente!");
-        }
         realizarSaque(numeroDaContaPagador, valor);
-        realizarDeposito(numeroDaContaRecebedor, valor);
-        
+        realizarDeposito(numeroDaContaRecebedor, valor); 
     }
 
     public void encerrar(Integer numeroDaConta) {

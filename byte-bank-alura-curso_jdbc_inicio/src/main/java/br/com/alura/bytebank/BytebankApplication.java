@@ -53,24 +53,6 @@ public class BytebankApplication {
         System.out.println("Finalizando a aplicação.");
     }
 
-    private static void realizarTransferencia() {
-        System.out.println("Digite o número da conta:");
-        var numeroDaContaPagador = teclado.nextInt();
-
-        System.out.println("Digite o valor da transferência:");
-        var valor = teclado.nextBigDecimal();
-
-        System.out.println("Digite o número da conta recebedora:");
-        var numeroDaContaRecebedor = teclado.nextInt();
-
-
-        service.realizarTransferencia(numeroDaContaPagador, valor, numeroDaContaRecebedor);
-        
-        System.out.println("Transferência realizado com sucesso!");
-        System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
-        teclado.next();
-    }
-
     private static int exibirMenu() {
         System.out.println("""
                 BYTEBANK - ESCOLHA UMA OPÇÃO:
@@ -85,6 +67,23 @@ public class BytebankApplication {
                 9 - Sair
                 """);
         return teclado.nextInt();
+    }
+
+    private static void realizarTransferencia() {
+        System.out.println("Digite o número da conta:");
+        var numeroDaContaPagador = teclado.nextInt();
+
+        System.out.println("Digite o valor da transferência:");
+        var valor = teclado.nextBigDecimal();
+
+        System.out.println("Digite o número da conta recebedora:");
+        var numeroDaContaRecebedor = teclado.nextInt();
+
+        service.realizarTransferencia(numeroDaContaPagador, valor, numeroDaContaRecebedor);
+
+        System.out.println("Transferência realizado com sucesso!");
+        System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
+        teclado.next();
     }
 
     private static void buscarContaNumero() {
